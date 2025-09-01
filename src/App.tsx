@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { DefinitionCard } from './components/DefinitionCard';
 import { LoadingSpinner } from './components/LoadingSpinner';
 import { ErrorMessage } from './components/ErrorMessage';
+import { DarkModeToggle } from './components/DarkModeToggle';
 import { fetchWordDefinition } from './services/dictionaryApi';
 import { DictionaryEntry } from './types/dictionary';
 
@@ -83,7 +84,8 @@ function App() {
   };
 
   return (
-    <div className="min-h-screen bg-white font-helvetica">
+    <div className="min-h-screen bg-white dark:bg-gray-900 font-helvetica transition-colors duration-200">
+      <DarkModeToggle />
       <div className="max-w-4xl mx-auto px-6 py-20">
         {/* Minimalist Search Input */}
         <div className="relative mb-16">
@@ -93,14 +95,14 @@ function App() {
             onChange={handleInputChange}
             onKeyPress={handleKeyPress}
             placeholder=""
-            className="w-full text-4xl md:text-6xl font-light text-[#FC4949] bg-transparent border-none outline-none placeholder-transparent caret-transparent"
+            className="w-full text-4xl md:text-6xl font-light text-[#FC4949] dark:text-red-400 bg-transparent border-none outline-none placeholder-transparent caret-transparent"
             style={{ fontFamily: 'Helvetica, Arial, sans-serif' }}
             autoFocus
           />
           
           {/* Custom blinking cursor */}
           <span 
-            className={`absolute text-4xl md:text-6xl font-light text-[#FC4949] pointer-events-none transition-opacity duration-75 ${showCursor ? 'opacity-100' : 'opacity-0'}`}
+            className={`absolute text-4xl md:text-6xl font-light text-[#FC4949] dark:text-red-400 pointer-events-none transition-opacity duration-75 ${showCursor ? 'opacity-100' : 'opacity-0'}`}
             style={{ 
               left: `${searchTerm.length * 0.6}em`,
               top: '0',
@@ -112,15 +114,15 @@ function App() {
           
           {/* Subtle hint text */}
           {!searchTerm && !isLoading && !definitions && !error && (
-            <div className="absolute top-full mt-8 text-gray-400 text-lg font-light">
+            <div className="absolute top-full mt-8 text-gray-400 dark:text-gray-500 text-lg font-light">
               Type a word and press Enter
             </div>
           )}
           
           {/* Escape hint text */}
           {(definitions || error) && !isLoading && (
-            <div className="absolute top-full mt-8 text-gray-500 text-lg font-medium bg-gray-100 px-4 py-2 rounded-lg">
-              ⌨️ Press <kbd className="bg-white px-2 py-1 rounded border text-sm">ESC</kbd> to clear and search again
+            <div className="absolute top-full mt-8 text-gray-500 dark:text-gray-400 text-lg font-medium bg-gray-100 dark:bg-gray-800 px-4 py-2 rounded-lg">
+              ⌨️ Press <kbd className="bg-white dark:bg-gray-700 px-2 py-1 rounded border text-sm">ESC</kbd> to clear and search again
             </div>
           )}
         </div>
@@ -136,7 +138,7 @@ function App() {
         )}
         
         {definitions && !isLoading && !error && (
-          <div className="mt-16 space-y-8">
+          <div className="mt-24 space-y-8">
             {definitions.map((entry, index) => (
               <DefinitionCard key={index} entry={entry} />
             ))}
